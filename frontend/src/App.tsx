@@ -3,11 +3,7 @@ import { notification } from 'antd';
 import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 import { fetchTodos, createTodo, updateTodo, deleteTodo } from './lib/api';
-
-export interface Duty {
-  id: number;
-  description: string;
-}
+import './App.css'
 
 function App() {
   const [todos, setTodos] = useState<Duty[]>([]);
@@ -42,7 +38,7 @@ function App() {
     setLoading(true);
     try {
       const updatedTodo = await updateTodo(id, description);
-      setTodos(todos.map((todo: { id: number; }) => (todo.id === id ? updatedTodo : todo)));
+      setTodos(todos.map((todo: Duty) => (todo.id === id ? updatedTodo : todo)));
       notification.success({ message: 'Todo updated successfully' });
     } catch (err) {
       notification.error({ message: (err as Error).message });
@@ -65,7 +61,7 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <>
       <h1>Todo List</h1>
 
       {/* Form to create a new task */}
@@ -73,7 +69,7 @@ function App() {
 
       {/* Render the list of todos */}
       <TodoList todos={todos} onDelete={handleDelete} onUpdate={handleUpdate} />
-    </div>
+      </>
   );
 }
 
