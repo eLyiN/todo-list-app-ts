@@ -15,8 +15,8 @@ This is a full-stack Todo List application with a **frontend built using Vite.js
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/todo-list-app.git
-cd todo-list-app/backend
+git clone https://github.com/yourusername/todo-list-app-ts.git
+cd todo-list-app-ts/backend
 ```
 
 ### 2. Install Dependencies
@@ -39,15 +39,8 @@ POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 ```
 
-### 4. Run Database Migrations
 
-Set up the database structure by running migrations:
-
-```bash
-npm run migrate
-```
-
-### 5. Run the Backend Server
+### 4. Run the Backend Server
 
 Now, start the backend server:
 

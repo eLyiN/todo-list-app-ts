@@ -54,7 +54,6 @@ The server should be running on `http://localhost:3000`.
 
 ### 6. API Endpoints
 The API endpoints can be accessed at the following routes:
---- HTTP Method --- | --- Route --- | --- Description ---
 - `GET /api/todos`: Get all todos
 - `POST /api/todos`: Create a new todo
 - `PUT /api/todos/:id`: Update a todo
