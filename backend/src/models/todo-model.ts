@@ -5,7 +5,7 @@ export const getTodos = async () => {
 };
 
 export const createTodo = async (description: string) => {
-  return await pool.query('INSERT INTO todos (description) VALUES ($1)', [description]);
+  return await pool.query('INSERT INTO todos (description) VALUES ($1) RETURNING *', [description]);
 };
 
 export const updateTodo = async (id: string, description: string) => {

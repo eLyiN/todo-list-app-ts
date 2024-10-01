@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { notification } from 'antd';
+import TodoList from './components/TodoList';
+import TodoForm from './components/TodoForm';
+import { fetchTodos, createTodo, updateTodo, deleteTodo } from './lib/api';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+export interface Duty {
+  id: number;
+  description: string;
 }
 
-export default App
+function App() {
+  const [todos, setTodos] = useState<Duty[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadTodos = async () => {
+      try {
+        const data = await fetchTodos();
+        setTodos(data);
+      } catch (err) {
+        notification.error({ message: (err as Error).message });
+      }
+    };
+    loadTodos();
+  }, []);
+
+  const handleCreate = async (description: string) => {
+    setLoading(true);
+    try {
+      const createdTodo = await createTodo(description);
+      setTodos([...todos, createdTodo]);
+      notification.success({ message: 'Todo created successfully' });
+    } catch (err) {
+      notification.error({ message: (err as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdate = async (id: number, description: string) => {
+    setLoading(true);
+    try {
+      const updatedTodo = await updateTodo(id, description);
+      setTodos(todos.map((todo: { id: number; }) => (todo.id === id ? updatedTodo : todo)));
+      notification.success({ message: 'Todo updated successfully' });
+    } catch (err) {
+      notification.error({ message: (err as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    setLoading(true);
+    try {
+      await deleteTodo(id);
+      setTodos(todos.filter((todo: { id: number; }) => todo.id !== id));
+      notification.success({ message: 'Todo deleted successfully' });
+    } catch (err) {
+      notification.error({ message: (err as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>Todo List</h1>
+
+      {/* Form to create a new task */}
+      <TodoForm initialValue="" loading={loading} onSubmit={handleCreate} />
+
+      {/* Render the list of todos */}
+      <TodoList todos={todos} onDelete={handleDelete} onUpdate={handleUpdate} />
+    </div>
+  );
+}
+
+export default App;
