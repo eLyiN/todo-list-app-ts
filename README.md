@@ -15,7 +15,7 @@ This is a full-stack Todo List application with a **frontend built using Vite.js
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/todo-list-app-ts.git
+git clone https://github.com/elyin/todo-list-app-ts.git
 cd todo-list-app-ts/backend
 ```
 
@@ -32,6 +32,7 @@ npm install
 Create a **.env** file in the **backend** directory and add your PostgreSQL database connection details:
 
 ```bash
+NODE_ENV=development
 POSTGRES_USER=your_postgres_user
 POSTGRES_PASSWORD=your_postgres_password
 POSTGRES_DB=your_database_name
